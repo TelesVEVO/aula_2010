@@ -1,14 +1,30 @@
 from typing import Optional
-
 from fastapi import FastAPI
+from pydantic import BaseModel
 
-app = FastAPI()
+app = FastAPI(
+    title="AAAAAAAAAAAAAAAAAA",
+    description="scsdaca",
+    docs_uri='/docs' #Habilita o Swagger
+)
 
+class InfoPrevisao(BaseModel):
+    empresa: str
+    volume : float
+    prev_fecham : float
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"status": True,
+            "message": "Serviço Operando Normalmente"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/predict")
+def previsoes(payload: InfoPrevisao) :
+    
+    if InfoPrevisao.empresa == "aapl":
+        w0, w1, w2 = [15.36, 1.06, -3.23]
+        previsao = w0 + w1 * InfoPrevisao.prev_fecham + w2 * InfoPrevisao.volume
+    else:
+        previsao = None
+
+    return {"profecia": previsao}
