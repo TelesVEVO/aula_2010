@@ -13,7 +13,7 @@ class InfoPrevisao(BaseModel):
     volume : float
     prev_fecham : float
 
-@app.get("/")
+@app.get("/previsoes")
 async def root():
     return {"status": True,
             "message": "Serviço Operando Normalmente"}
